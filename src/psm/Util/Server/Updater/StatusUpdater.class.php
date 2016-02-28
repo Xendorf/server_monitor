@@ -82,7 +82,7 @@ class StatusUpdater {
 		$this->server = $this->db->selectRow(PSM_DB_PREFIX . 'servers', array(
 			'server_id' => $server_id,
 		), array(
-			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
+			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'rtime', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
 		));
 		if(empty($this->server)) {
 			return false;
@@ -94,6 +94,9 @@ class StatusUpdater {
 				break;
 			case 'website':
 				$this->status_new = $this->updateWebsite($max_runs);
+				break;
+			case 'ping':
+				$this->status_new = $this->updatePing($max_runs);
 				break;
 		}
 
@@ -133,6 +136,50 @@ class StatusUpdater {
 
 	}
 
+    /**
+     * Check the current server with a ping and hope to get a pong
+     * @param int $max_runs
+     * @param int $run
+     * @return boolean
+     */
+    protected function updatePing($max_runs, $run = 1) {
+        $errno		= 0;
+        /* timeout min: 5 sec */
+        $timeout	= ($this->server['timeout'] < 5 ? 5 : $this->server['timeout']);
+        /* ICMP ping packet with a pre-calculated checksum */
+        $package	= "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+        /* save response time */
+        $starttime 	= microtime(true);
+        
+        /* if ipv6 we have to use AF_INET6 */
+        if (psm_validate_ipv6($this->server['ip'])) {
+            /* Need to remove [] on ipv6 address */
+            $this->server['ip'] = trim($this->server['ip'], '[]');
+            $socket  = socket_create(AF_INET6, SOCK_RAW, 1);
+        } else {
+            $socket  = socket_create(AF_INET, SOCK_RAW, 1);
+        }
+        
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
+        socket_connect($socket, $this->server['ip'], null);
+        socket_send($socket, $package, strLen($package), 0);
+        
+        /* if ping fails it returns false ... */
+        $status = (socket_read($socket, 255)) ? true : false;
+        $this->rtime = (microtime(true) - $starttime);
+        /* ... and error reason */
+        if (!$status) $this->error = socket_last_error() .': '. socket_strerror(socket_last_error());
+        
+        socket_close($socket);
+        
+        /* check if server is available and rerun if asked. */
+        if(!$status && $run < $max_runs) {
+            return $this->updatePing($max_runs, $run + 1);
+        }
+        
+        return $status;
+    }
+    
 	/**
 	 * Check the current server as a service
 	 * @param int $max_runs
@@ -140,46 +187,18 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updateService($max_runs, $run = 1) {
-
-        if (($this->server['port']) == 1) {
-            /* timeout min: 5 sec */
-            $timeout = ($this->server['timeout'] < 5 ? 5 : $this->server['timeout']);
-            /* save response time */
-            $starttime = microtime(true);
-            /* ICMP ping packet with a pre-calculated checksum */
-            $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
-            
-            $socket = socket_create(AF_INET, SOCK_RAW, 1);
-            socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
-            socket_connect($socket, $this->server['ip'], null);
-            $ts = microtime(true);
-            socket_send($socket, $package, strLen($package), 0);
-            
-            if (socket_read($socket, 255)) {
-                $status = true;
-            } else {
-                /* store error reason */
-                $this->error = socket_last_error() .' '. socket_strerror(socket_last_error());
-                $status = false; 
-            }
-            $this->rtime = (microtime(true) - $starttime);
-            socket_close($socket);
-        } else
-        //rest of code
-        { 
-            $errno = 0;
-            // save response time
-            $starttime = microtime(true);
-
-            $fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
-
-            $status = ($fp === false) ? false : true;
-            $this->rtime = (microtime(true) - $starttime);
-
-            if(is_resource($fp)) {
-                fclose($fp);
-            }
-        }
+		$errno = 0;
+		// save response time
+		$starttime = microtime(true);
+		
+		$fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+		
+		$status = ($fp === false) ? false : true;
+		$this->rtime = (microtime(true) - $starttime);
+		
+		if(is_resource($fp)) {
+			fclose($fp);
+		}
         
 		// check if server is available and rerun if asked.
 		if(!$status && $run < $max_runs) {
@@ -198,6 +217,12 @@ class StatusUpdater {
 	protected function updateWebsite($max_runs, $run = 1) {
 		$starttime = microtime(true);
 
+		// Parse a URL and return its components
+		$url = parse_url($this->server['ip']);
+		
+		// Build url
+		$this->server['ip'] = $url['scheme'] .'://'. (psm_validate_ipv6($url['host']) ? '['. $url['host'] .']' : $url['host']) .':'. $this->server['port'] . (isset($url['path']) ? $url['path'] : '') . (isset($url['query']) ? '?'. $url['query'] : '');
+		
 		// We're only interested in the header, because that should tell us plenty!
 		// unless we have a pattern to search for!
 		$curl_result = psm_curl_get(
@@ -219,7 +244,7 @@ class StatusUpdater {
 
 		if(empty($code_matches[0])) {
 			// somehow we dont have a proper response.
-			$this->error = 'no response from server';
+			$this->error = psm_get_lang('error_server_no_response');
 			$result = false;
 		} else {
 			$code = $code_matches[1][0];
@@ -236,7 +261,7 @@ class StatusUpdater {
 		if($this->server['pattern'] != '') {
 			// Check to see if the pattern was found.
 			if(!preg_match("/{$this->server['pattern']}/i", $curl_result)) {
-				$this->error = 'Pattern not found.';
+				$this->error = psm_get_lang('error_server_pattern_not_found');
 				$result = false;
 			}
 		}

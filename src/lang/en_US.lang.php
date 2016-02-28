@@ -123,6 +123,7 @@ $sm_lang = array(
 		'type' => 'Type',
 		'type_website' => 'Website',
 		'type_service' => 'Service',
+        'type_ping' => 'Ping',
 		'pattern' => 'Search string/pattern',
 		'pattern_description' => 'If this pattern is not found on the website, the server will be marked offline. Regular expressions are allowed.',
 		'last_check' => 'Last check',
@@ -169,6 +170,8 @@ $sm_lang = array(
 		'error_server_ip_bad_website' => 'The website URL is not valid.',
 		'error_server_type_invalid' => 'The selected server type is invalid.',
 		'error_server_warning_threshold_invalid' => 'The warning threshold must be a valid integer greater than 0.',
+        'error_server_no_response' => 'No response from server.',
+        'error_server_pattern_not_found' => 'Pattern not found.',
 	),
 	'config' => array(
 		'general' => 'General',

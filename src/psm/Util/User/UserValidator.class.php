@@ -78,7 +78,7 @@ class UserValidator {
 		if(strlen($username) > 64 || strlen($username) < 2) {
             throw new \InvalidArgumentException('user_name_bad_length');
         }
-		if (!preg_match('/^[a-zA-Z\d_]{2,64}$/i', $username)) {
+		if (!preg_match('/^[a-zA-Z\d_\.]{2,64}$/i', $username)) {
             throw new \InvalidArgumentException('user_name_invalid');
 		}
 		$user_exists = $this->user->getUserByUsername($username);

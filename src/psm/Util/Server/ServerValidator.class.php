@@ -113,7 +113,7 @@ class ServerValidator {
 	 * @throws \InvalidArgumentException
 	 */
 	public function type($type) {
-		if(!in_array($type, array('service', 'website'))) {
+		if(!in_array($type, array('service', 'website', 'ping'))) {
 			throw new \InvalidArgumentException('server_type_invalid');
 		}
 		return true;
