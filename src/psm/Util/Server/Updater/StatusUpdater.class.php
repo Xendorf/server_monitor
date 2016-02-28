@@ -140,18 +140,47 @@ class StatusUpdater {
 	 * @return boolean
 	 */
 	protected function updateService($max_runs, $run = 1) {
-        $errno = 0;
-        // save response time
-        $starttime = microtime(true);
-    
-        $fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
-    
-        $status = ($fp === false) ? false : true;
-        $this->rtime = (microtime(true) - $starttime);
-    
-        if(is_resource($fp)) {
-            fclose($fp);
+
+        if (($this->server['port']) == 1) {
+            /* timeout min: 5 sec */
+            $timeout = ($this->server['timeout'] < 5 ? 5 : $this->server['timeout']);
+            /* save response time */
+            $starttime = microtime(true);
+            /* ICMP ping packet with a pre-calculated checksum */
+            $package = "\x08\x00\x7d\x4b\x00\x00\x00\x00PingHost";
+            
+            $socket = socket_create(AF_INET, SOCK_RAW, 1);
+            socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, array('sec' => $timeout, 'usec' => 0));
+            socket_connect($socket, $this->server['ip'], null);
+            $ts = microtime(true);
+            socket_send($socket, $package, strLen($package), 0);
+            
+            if (socket_read($socket, 255)) {
+                $status = true;
+            } else {
+                /* store error reason */
+                $this->error = socket_last_error() .' '. socket_strerror(socket_last_error());
+                $status = false; 
+            }
+            $this->rtime = (microtime(true) - $starttime);
+            socket_close($socket);
+        } else
+        //rest of code
+        { 
+            $errno = 0;
+            // save response time
+            $starttime = microtime(true);
+
+            $fp = fsockopen ($this->server['ip'], $this->server['port'], $errno, $this->error, 10);
+
+            $status = ($fp === false) ? false : true;
+            $this->rtime = (microtime(true) - $starttime);
+
+            if(is_resource($fp)) {
+                fclose($fp);
+            }
         }
+        
 		// check if server is available and rerun if asked.
 		if(!$status && $run < $max_runs) {
 			return $this->updateService($max_runs, $run + 1);
