@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Haydar Kulekci <haydarkulekci@gmail.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
     'name' => 'Türkçe - Turkish',
     'locale' => array('tr_TR.UTF-8', 'tr_TR', 'turkish', 'turkish-tr'),
+	'locale_tag' => 'tr',
+	'locale_dir' => 'ltr',
     'system' => array(
         'title' => 'Server Monitor',
         'install' => 'Yükle',
@@ -195,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
         'sms_gateway_smsglobal' => 'SMSGlobal',
         'sms_gateway_smsit' => 'Smsit',
+        'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
         'sms_gateway_username' => 'Servis kullanıcı adı',
         'sms_gateway_password' => 'Servis şifresi',
         'sms_from' => 'Gönderen numarası',

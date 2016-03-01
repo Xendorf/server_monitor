@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      manhere <https://github.com/manhere>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => '中文 - Chinese',
 	'locale' => array('zh_CN.UTF-8', 'zh_CN', 'chinese', 'chinese-cn'),
+	'locale_tag' => 'zh',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => '安装',
@@ -195,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'SMS网关用户名',
 		'sms_gateway_password' => 'SMS网关密码',
 		'sms_from' => '发信人电话号',

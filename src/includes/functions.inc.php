@@ -388,6 +388,7 @@ function psm_update_available() {
 function psm_build_mail($from_name = null, $from_email = null) {
 	$phpmailer = new \PHPMailer();
 	$phpmailer->Encoding = "base64";
+	$phpmailer->CharSet = 'UTF-8';
 	$phpmailer->SMTPDebug = false;
 
 	if(psm_get_conf('email_smtp') == '1') {
@@ -465,6 +466,9 @@ function psm_build_sms() {
 			break;
 		case 'smsglobal':
 			$sms = new \psm\Txtmsg\Smsglobal();
+			break;
+		case 'freevoipdeal':
+			$sms = new \psm\Txtmsg\FreeVoipDeal();
 			break;
 	}
 

@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Ik-Jun
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => '한국 - Korean',
 	'locale' => array('ko_KR.UTF-8', 'ko_KR', 'korean'),
+	'locale_tag' => 'ko',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -195,6 +197,7 @@ $sm_lang = array(
 		'sms_gateway_smsit' => 'Smsit',
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',

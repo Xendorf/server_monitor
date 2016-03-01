@@ -19,15 +19,17 @@
  *
  * @package     phpservermon
  * @author      Roman Beylin <roman.beylin@yandex.ru>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Russian - Русский',
 	'locale' => array('ru_RU.UTF-8', 'ru_RU', 'russian', 'russian'),
+	'locale_tag' => 'ru',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Сервер Мониторинг',
 		'install' => 'Установка',
@@ -195,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Пользователь',
 		'sms_gateway_password' => 'Пароль',
 		'sms_from' => 'Номер отправителя',

@@ -18,19 +18,21 @@
  * along with PHP Server Monitor.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package     phpservermon
- * @author      Pepijn Over <pep@neanderthal-technology.com>
- * @copyright   Copyright (c) 2008-2014 Pepijn Over <pep@neanderthal-technology.com>
+ * @author      Pepijn Over <pep@peplab.net>
+ * @copyright   Copyright (c) 2008-2015 Pepijn Over <pep@peplab.net>
  * @license     http://www.gnu.org/licenses/gpl.txt GNU GPL v3
- * @version     Release: v3.1.1
+ * @version     Release: @package_version@
  * @link        http://www.phpservermonitor.org/
  **/
 
 $sm_lang = array(
 	'name' => 'Nederlands - Dutch',
 	'locale' => array('nl_NL.UTF-8', 'nl_NL', 'dutch'),
+	'locale_tag' => 'nl',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
-		'install' => 'Intalleren',
+		'install' => 'Installeren',
 		'action' => 'Actie',
 		'save' => 'Opslaan',
 		'edit' => 'Wijzig',
@@ -195,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway gebruikersnaam',
 		'sms_gateway_password' => 'Gateway wachtwoord',
 		'sms_from' => 'Telefoonnummer afzender',
@@ -294,6 +297,6 @@ $sm_lang = array(
 	),
 	'error' => array(
 		'401_unauthorized' => 'Unauthorized',
-		'401_unauthorized_description' => 'U heeft niet de juiste bevoegdheden om deze pagina te bekijken.',
+		'401_unauthorized_description' => 'Je hebt niet de juiste bevoegdheden om deze pagina te bekijken.',
 	),
 );

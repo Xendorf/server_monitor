@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Italiano - Italian',
 	'locale' => array('it_IT.UTF-8', 'it_IT', 'italian', 'ita'),
+	'locale_tag' => 'it',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installa',
@@ -37,7 +39,7 @@ $sm_lang = array(
 		'delete' => 'Elimina',
 		'date' => 'Data',
 		'message' => 'Messaggio',
-		'yes' => 'Si',
+		'yes' => 'Sì',
 		'no' => 'No',
 		'insert' => 'Inserisci',
 		'add_new' => 'Aggiungi Nuovo',
@@ -61,7 +63,7 @@ $sm_lang = array(
 	),
 	'menu' => array(
 		'config' => 'Configurazione',
-		'server' => 'Server',
+		'server' => 'Servers',
 		'server_log' => 'Log',
 		'server_status' => 'Stato',
 		'server_update' => 'Aggiorna',
@@ -199,6 +201,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Nome Utente Gateway',
 		'sms_gateway_password' => 'Password Gateway',
 		'sms_from' => 'Numero di telefono del mittente',
@@ -235,7 +238,7 @@ $sm_lang = array(
 		'settings_log' => 'Impostazioni Log',
 		'auto_refresh' => 'Auto-Aggiornamento',
 		'auto_refresh_servers' =>
-			'Auto-Aggiornamento pagina server.<br/>'.
+			'Auto-Aggiornamento pagina servers.<br/>'.
 			'<span class="small">'.
 			'Tempo in secondi, se impostato a 0 la pagina non si aggiornerà.'.
 			'</span>',

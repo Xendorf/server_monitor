@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'English',
 	'locale' => array('en_US.UTF-8', 'en_US', 'american', 'english-us'),
+	'locale_tag' => 'en',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Install',
@@ -199,6 +201,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway username',
 		'sms_gateway_password' => 'Gateway password',
 		'sms_from' => 'Sender\'s phone number',

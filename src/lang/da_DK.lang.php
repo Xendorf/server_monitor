@@ -28,6 +28,8 @@
 $sm_lang = array(
 	'name' => 'Dansk - Danish',
 	'locale' => array('da_DK.UTF-8', 'da_DK', 'danish', 'danish-dk'),
+	'locale_tag' => 'da',
+	'locale_dir' => 'ltr',
 	'system' => array(
 		'title' => 'Server Monitor',
 		'install' => 'Installere',
@@ -195,6 +197,7 @@ $sm_lang = array(
         'sms_gateway_textmarketer' => 'Textmarketer',
 		'sms_gateway_smsglobal' => 'SMSGlobal',
 		'sms_gateway_smsit' => 'Smsit',
+		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
 		'sms_gateway_username' => 'Gateway brugernavn/apikey',
 		'sms_gateway_password' => 'Gateway adgangskode',
 		'sms_from' => 'Afsenders navn.',
