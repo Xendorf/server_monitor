@@ -234,6 +234,19 @@ legend {
 	padding: 6px 8px;
 	vertical-align: middle;
 }
+#flow-small .offline, #flow-small .online {
+    max-width: 200px;
+}
+#flow-small .entity {
+    padding: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+#flow-small .entity h2 {
+	margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 24px;
+}
 .row-offline, .row-online {
 	cursor: pointer;
 }

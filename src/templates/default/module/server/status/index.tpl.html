@@ -21,6 +21,28 @@
 			{% endfor %}
 		</div>
 	</div>
+	<div id="flow-small" class="tab-pane {{ small_layout_active }}">
+		<div class="entity-container">
+			{% for server in servers_offline %}
+			<div class="offline">
+				<div class="entity {{ server.class_warning }}" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<h2>{{ server.label }}</h2>
+					<p><i class="icon-white icon-check"></i> {{ server.last_online_nice }}</p>
+					<p><i class="icon-white icon-share"></i> {{ server.last_checked_nice }}</p>
+				</div>
+			</div>
+			{% endfor %}
+			{% for server in servers_online %}
+			<div class="online">
+				<div class="entity" onclick="window.location.href='{{ server.url_view|raw }}'">
+					<h2>{{ server.label }}</h2>
+					<p><i class="icon-white icon-check"></i> {{ server.last_online_nice }}</p>
+					<p><i class="icon-white icon-share"></i> {{ server.rtime }}s</p>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
 	<div id="list-layout" class="tab-pane {{ list_layout_active }}">
 		<div class="entity-container">
 			<table class="table table-bordered">
