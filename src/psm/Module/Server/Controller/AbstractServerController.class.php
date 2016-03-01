@@ -102,6 +102,12 @@ abstract class AbstractServerController extends AbstractController {
 		$server['email'] = psm_get_lang('system', $server['email']);
 		$server['sms'] = psm_get_lang('system', $server['sms']);
 		$server['pushover'] = psm_get_lang('system', $server['pushover']);
+        
+        /* check if 'ip' are an hostname or not */
+        if (!psm_validate_ip($server['ip']))
+        {
+            $server['ipbyhost'] = psm_get_ipbyhost($server['ip']);
+        }
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {
 			$server['status'] = 'warning';

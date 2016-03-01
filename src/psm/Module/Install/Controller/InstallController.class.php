@@ -120,6 +120,7 @@ class InstallController extends AbstractController {
 
 			$config = array(
 				'host' => 'localhost',
+                'port' => '3306',
 				'name' => '',
 				'user' => '',
 				'pass' => '',
@@ -142,7 +143,8 @@ class InstallController extends AbstractController {
 					$config['host'],
 					$config['user'],
 					$config['pass'],
-					$config['name']
+					$config['name'],
+                    $config['port']
 				);
 
 				if($this->db->status()) {

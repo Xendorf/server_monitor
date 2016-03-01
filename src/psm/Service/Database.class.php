@@ -36,6 +36,12 @@ class Database {
 	protected $db_host;
 
 	/**
+	 * DB port
+	 * @var string $db_port
+	 */
+	protected $db_port = '3306';
+	
+	/**
 	 * DB name
 	 * @var string $db_name
 	 */
@@ -80,19 +86,22 @@ class Database {
 	 * @param string $user
 	 * @param string $pass
 	 * @param string $db
+	 * @param string $port
 	 */
-	function __construct($host = null, $user = null, $pass = null, $db = null) {
+	function __construct($host = null, $user = null, $pass = null, $db = null, $port = null) {
 		if($host != null && $user != null && $pass != null && $db != null) {
 			$this->db_host = $host;
 			$this->db_name = $db;
 			$this->db_user = $user;
 			$this->db_pass = $pass;
+            if ($port != null) $this->db_port = $port;
 			$this->connect();
 		} elseif(defined('PSM_DB_HOST') && defined('PSM_DB_USER') && defined('PSM_DB_PASS') && defined('PSM_DB_NAME')) {
 			$this->db_host = PSM_DB_HOST;
 			$this->db_name = PSM_DB_NAME;
 			$this->db_user = PSM_DB_USER;
 			$this->db_pass = PSM_DB_PASS;
+            if (defined('PSM_DB_PORT')) $this->db_port = PSM_DB_PORT;
 			$this->connect();
 		}
 	}
@@ -480,6 +489,14 @@ class Database {
 	}
 
 	/**
+	 * Get the db port of the current connection
+	 * @return string
+	 */
+	public function getDbPort() {
+		return $this->db_port;
+	}
+
+	/**
 	 * Get the db user of the current connection
 	 * @return string
 	 */
@@ -504,7 +521,7 @@ class Database {
 		// Initizale connection
 		try {
 			$this->pdo = new \PDO(
-				'mysql:host='.$this->db_host.';dbname='.$this->db_name.';charset=utf8',
+				'mysql:host='.$this->db_host.';dbname='.$this->db_name.';charset=utf8;port='.$this->db_port,
 				$this->db_user,
 				$this->db_pass
 			);

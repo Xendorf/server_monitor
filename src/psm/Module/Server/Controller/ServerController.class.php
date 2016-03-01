@@ -387,6 +387,7 @@ class ServerController extends AbstractServerController {
 			'label_label' => psm_get_lang('servers', 'label'),
 			'label_status' => psm_get_lang('servers', 'status'),
 			'label_domain' => psm_get_lang('servers', 'domain'),
+            'label_ipdomain' => psm_get_lang('servers', 'ipdomain'),
 			'label_timeout' => psm_get_lang('servers', 'timeout'),
 			'label_timeout_description' => psm_get_lang('servers', 'timeout_description'),
 			'label_port' => psm_get_lang('servers', 'port'),

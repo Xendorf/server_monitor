@@ -553,6 +553,43 @@ function psm_is_cli() {
 }
 
 /**
+ * Check if ip is valid or not
+ *
+ * @param string $ip
+ * @return boolean
+ */
+function psm_validate_ip($ip) {
+    $ipv4 = psm_validate_ipv4($ip);
+    $ipv6 = psm_validate_ipv6($ip);
+    
+    return ($ipv4 || $ipv6 ? true : false);
+}
+
+/**
+ * Check if ip is IPv4 or not
+ *
+ * @param string $ip
+ * @return boolean
+ */
+function psm_validate_ipv4($ip) {
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function psm_get_ipbyhost($host) {
+    $url = parse_url($host);
+    $domain = $url['path'];
+    if (!empty($url['host'])) $domain = $url['host'];
+    
+    /* se presente anche un solo punto e l'hostname non termina con un . lo aggiunge */
+    if (strpos($domain, '.') !== false && substr($domain, -1, 1) != '.') $domain .= '.';
+    return gethostbyname($domain);
+}
+
+/**
  * Check if ip is IPv6 or not
  *
  * @param string $ip

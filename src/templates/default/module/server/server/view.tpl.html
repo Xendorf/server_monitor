@@ -37,6 +37,12 @@
 			<td>{{ label_domain }}:</td>
 			<td>{{ ip|raw }}</td>
 		</tr>
+        {% if ipbyhost %}
+		<tr>
+			<td>{{ label_ipdomain }}:</td>
+			<td>{{ ipbyhost|raw }}</td>
+		</tr>
+        {% endif %}
 		<tr>
 			<td>{{ label_port }}:</td>
 			<td>{{ port }}</td>
