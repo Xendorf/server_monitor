@@ -585,9 +585,9 @@ function psm_validate_ipv4($ip) {
 
 function psm_get_ipbyhost($host) {
     $url = parse_url($host);
-    $domain = $url['path'];
+    $domain = '';
     if (!empty($url['host'])) $domain = $url['host'];
-    
+    if ($domain == '') return 'N/A';
     /* se presente anche un solo punto e l'hostname non termina con un . lo aggiunge */
     if (strpos($domain, '.') !== false && substr($domain, -1, 1) != '.') $domain .= '.';
     return gethostbyname($domain);
