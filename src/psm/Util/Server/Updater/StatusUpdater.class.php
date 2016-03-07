@@ -58,6 +58,12 @@ class StatusUpdater {
 	 * @var array $server
 	 */
 	protected $server;
+    
+    /**
+     * SNMP information result
+     * @var array $snmp
+     **/
+    protected $snmp = array('raw' => '', 'convert' => '');
 
 	function __construct(Database $db) {
 		$this->db = $db;
@@ -83,11 +89,36 @@ class StatusUpdater {
 			'server_id' => $server_id,
 		), array(
 			'server_id', 'ip', 'port', 'label', 'type', 'pattern', 'status', 'rtime', 'active', 'warning_threshold', 'warning_threshold_counter', 'timeout',
+            'snmp_oid',
 		));
+		
+		// get snmp info from db
+		$snmp = $this->db->selectRow(PSM_DB_PREFIX .'snmp', array(
+			'server_id' => $server_id,
+		), array(
+			'snmp_id', 'snmp_community', 'snmp_version'
+		));
+		// if not found ... 
+		if (empty($snmp['snmp_id']))
+		{
+			$snmp = array(
+				'snmp_id'        => '0',
+				'snmp_community' => '',
+				'snmp_version'   => '',
+				);
+		}
+		
+		// merge / add to $server
+		foreach ($snmp as $snmp_field => $snmp_value)
+		{
+			if (empty($this->server[$snmp_field])) $this->server[$snmp_field] = $snmp_value;
+		}
+		
 		if(empty($this->server)) {
 			return false;
 		}
 
+		if (psm_is_cli()) echo 'Server: '. $this->server['label'] .' [type: '. $this->server['type'] .']' ."\n";
 		switch($this->server['type']) {
 			case 'service':
 				$this->status_new = $this->updateService($max_runs);
@@ -98,13 +129,19 @@ class StatusUpdater {
 			case 'ping':
 				$this->status_new = $this->updatePing($max_runs);
 				break;
+			case 'snmp':
+				$this->status_new = $this->updateSNMP($max_runs);
+				break;
 		}
+		if (psm_is_cli()) echo 'Server: '. $this->server['label'] .' [result: '. ($this->status_new ? 'on' : 'off') .']' ."\n";
 
 		// update server status
 		$save = array(
 			'last_check' => date('Y-m-d H:i:s'),
 			'error' => $this->error,
 			'rtime' => $this->rtime,
+            'snmp_value_raw' => trim(''. $this->snmp['raw']),
+            'snmp_value_convert' => trim(''. $this->snmp['convert']),
 		);
 
 		// log the uptime before checking the warning threshold,
@@ -165,7 +202,7 @@ class StatusUpdater {
         socket_send($socket, $package, strLen($package), 0);
         
         /* if ping fails it returns false ... */
-        $status = (socket_read($socket, 255)) ? true : false;
+        $status = (@socket_read($socket, 255)) ? true : false;
         $this->rtime = (microtime(true) - $starttime);
         /* ... and error reason */
         if (!$status) $this->error = socket_last_error() .': '. socket_strerror(socket_last_error());
@@ -208,6 +245,59 @@ class StatusUpdater {
 		return $status;
 	}
 
+    /**
+     * Check the current server with a ping and hope to get a pong
+     * @param int $max_runs
+     * @param int $run
+     * @return boolean
+     */
+    protected function updateSNMP($max_runs, $run = 1) {
+        
+        $objSnmp = new \psm\Util\Server\SnmpManager(
+                $this->server['ip'],
+                $this->server['snmp_community'],
+                $this->server['port'],
+                $this->server['snmp_version'],
+                $this->server['timeout'],
+                $this->db
+            );
+        $objSnmp->debug = true;
+        if ($objSnmp->output['result'] === false)
+        {
+            $this->error = $objSnmp->output['error'];
+            return false;
+        }
+        
+        $oid = $this->server['snmp_oid'];
+        
+        /* save start time */
+        $starttime 	= microtime(true);
+        
+        /* get oid value */
+        $status = $objSnmp->_('query', $oid);
+        
+        /* save response time */
+        $this->rtime = (microtime(true) - $starttime);
+        
+        /* ... and error reason if the case */
+        if ($status === false)
+        {
+            $this->error = $objSnmp->output['error'];
+        }
+        else
+        {
+            $this->snmp['raw'] = $objSnmp->output['result'];
+            $this->snmp['convert'] = $objSnmp->output['convert'];
+        }
+        
+        /* check if server is available and rerun if asked. */
+        if($status === false && $run < $max_runs) {
+            return $this->updateSNMP($max_runs, $run + 1);
+        }
+        
+        return ($status === false ? false : true);
+    }
+    
 	/**
 	 * Check the current server as a website
 	 * @param int $max_runs

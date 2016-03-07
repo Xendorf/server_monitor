@@ -52,6 +52,9 @@ abstract class AbstractServerController extends AbstractController {
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
 		}
+        
+        $sql_join .= 'LEFT JOIN `'. PSM_DB_PREFIX .'snmp` AS `tbsnmp` ON (`tbsnmp`.`server_id` = `s`.`server_id`)';
+        
 		if($server_id !== null) {
 			$server_id = intval($server_id);
 			$sql_where ="WHERE `s`.`server_id`={$server_id} ";
@@ -75,7 +78,13 @@ abstract class AbstractServerController extends AbstractController {
 					`s`.`pushover`,
 					`s`.`warning_threshold`,
 					`s`.`warning_threshold_counter`,
-					`s`.`timeout`
+					`s`.`timeout`,
+                    IFNULL(`tbsnmp`.`snmp_id`, '0') AS `snmp_id`,
+                    IFNULL(`tbsnmp`.`snmp_community`, '') AS `snmp_community`,
+                    IFNULL(`tbsnmp`.`snmp_version`, '') AS `snmp_version`,
+                    `s`.`snmp_oid`,
+                    `s`.`snmp_value_raw`,
+                    `s`.`snmp_value_convert`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
 				{$sql_where}
@@ -107,6 +116,30 @@ abstract class AbstractServerController extends AbstractController {
         if (!psm_validate_ip($server['ip']))
         {
             $server['ipbyhost'] = psm_get_ipbyhost($server['ip']);
+        }
+        
+        /* check if server type = SNMP */
+        if ($server['type'] == 'snmp')
+        {
+            $server['snmp_detail'] = 'on';
+            
+            
+            $server['snmp_last_value'] = ($server['snmp_value_raw']);
+            if ($server['snmp_value_raw'] != $server['snmp_value_convert'])
+            {
+                $server['snmp_last_value'] = $server['snmp_value_convert'];
+                /*preg_match_all('/{{([\S]+)}}/', $server['snmp_last_value'], $matches);*/
+                /*preg_replace('/{{([\S]+)}}/', psm_get_lang('common', '$1'));*/
+                $server['snmp_last_value'] = preg_replace_callback(
+                    '/{{([\S]+)}}/',
+                    function (&$matches) { return psm_get_lang('common', $matches[1]); },
+                    $server['snmp_last_value']);
+            }
+            $server['snmp_oid_key'] = psm_get_lang('snmp', 'oid_'. strtolower($server['snmp_oid']));
+        }
+        else
+        {
+            $server['snmp_detail'] = 'off';
         }
 
 		if($server['status'] == 'on' && $server['warning_threshold_counter'] > 0) {

@@ -94,4 +94,33 @@
 		{% endif %}
 	</tbody>
 </table>
+{% if snmp_detail == 'on' %}
+<table class="table table-bordered">
+	<colgroup>
+		<col class="oce-first" />
+		<col />
+	</colgroup>
+	<thead>
+		<tr class="head">
+			<th colspan="2">{{ label_snmp_detail_title }}</th>
+		</tr>
+		<tr>
+			<td>{{ label_snmp_community }}:</td>
+			<td>{{ snmp_community }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_snmp_version }}:</td>
+			<td>{{ snmp_version }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_snmp_oid }}:</td>
+			<td>{{ snmp_oid_key }}</td>
+		</tr>
+		<tr>
+			<td>{{ label_snmp_oid_last_value }}:</td>
+			<td>{{ snmp_last_value }}</td>
+		</tr>
+	</thead>
+</table>
+{% endif %}
 {{ html_history|raw }}

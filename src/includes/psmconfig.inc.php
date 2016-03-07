@@ -104,6 +104,12 @@ define('PSM_CURL_TIMEOUT', 10);
 
 
 /**
+ * Default SNMP Community name (can be overwritten per-server).
+ */
+define('PSM_SNMP_COMMUNITY', 'public');
+
+
+/**
  * Name of the default theme.
  */
 define('PSM_THEME', 'default');

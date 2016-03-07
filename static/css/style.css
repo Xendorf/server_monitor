@@ -188,6 +188,10 @@ legend {
 .form-horizontal label {
 	font-weight: bold;
 }
+.form-horizontal .separator {
+    margin-top: 18px;
+    border-top: 1px solid #ddd;
+}
 .help-block {
 	font-style: italic;
 	color: #666;
@@ -582,4 +586,13 @@ legend{
 
 .icon-pushover {
   background-position: -72px -168px;
+}
+
+/* Xendorf: personal added style */
+.tleft   { text-align: left; }
+.tcenter { text-align: center; }
+.tright  { text-align: right; }
+
+tr.highlight-fx td.highlight {
+	background-color: yellow !important;
 }

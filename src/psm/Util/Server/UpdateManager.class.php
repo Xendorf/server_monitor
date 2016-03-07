@@ -72,7 +72,7 @@ class UpdateManager {
 		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
 				{$sql_join}
-				WHERE `active`='yes' ";
+				WHERE `active`='yes' ORDER BY `s`.`label` ";
 
 		$servers = $this->db->query($sql);
 

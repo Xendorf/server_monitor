@@ -20,6 +20,7 @@
 					<option value="service" {{ edit_type_selected_service|raw }}>{{ label_service }}</option>
 					<option value="website" {{ edit_type_selected_website|raw }}>{{ label_website }}</option>
 					<option value="ping" {{ edit_type_selected_ping|raw }}>{{ label_ping }}</option>
+					<option value="snmp" {{ edit_type_selected_snmp|raw }}>{{ label_snmp }}</option>
 				 </select>
 			</div>
 		</div>
@@ -96,6 +97,44 @@
 					{% for user in users %}
 					<option value="{{ user.user_id }}" {{ user.edit_selected|raw }}> {{ user.name }}</option>
 					{% endfor %}
+				</select>
+			</div>
+		</div>
+        <div class="separator"></div>
+        <legend>{{ label_snmp_title }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="snmp_community">{{ label_snmp_community }}</label>
+			<div class="controls">
+				<input type="text" id="snmp_community" name="snmp_community" value="{{ edit_snmp_community }}" placeholder="{{ default_value_snmp_community }}" maxlength="250" data-toggle="tooltip" title="{{ label_snmp_community }}" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="snmp_version">{{ label_snmp_version }}</label>
+			<div class="controls">
+				<select id="snmp_version" name="snmp_version" class="input-mini">
+					<option value="1" {{ edit_snmp_version_selected_1|raw }}>1</option>
+					<option value="2c" {{ edit_snmp_version_selected_2c|raw }}>2c</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="snmp_oid">{{ label_snmp_oid }}</label>
+			<div class="controls">
+				<select id="snmp_oid" name="snmp_oid">
+					<optgroup label="{{ label_optgroup_oid_standard }}">
+					<option value="sysDescr" {{ edit_snmp_oid_selected_sysDescr|raw }}>{{ label_snmp_oid_sysdescr }}</option>
+					<option value="sysObjectID" {{ edit_snmp_oid_selected_sysObjectID|raw }}>{{ label_snmp_oid_sysobjectid }}</option>
+					<option value="sysUpTime" {{ edit_snmp_oid_selected_sysUpTime|raw }}>{{ label_snmp_oid_sysuptime }}</option>
+					<option value="sysContact" {{ edit_snmp_oid_selected_sysContact|raw }}>{{ label_snmp_oid_syscontact }}</option>
+					<option value="sysName" {{ edit_snmp_oid_selected_sysName|raw }}>{{ label_snmp_oid_sysname }}</option>
+					<option value="sysLocation" {{ edit_snmp_oid_selected_sysLocation|raw }}>{{ label_snmp_oid_syslocation }}</option>
+					<option value="sysServices" {{ edit_snmp_oid_selected_sysServices|raw }}>{{ label_snmp_oid_sysservices }}</option>
+					</optgroup>
+					<optgroup label="{{ label_optgroup_oid_custom }}">
+					{% for oids in oids_custom %}
+					<option value="{{ oids.oid_name }}" {{ oids.edit_selected|raw }}> {{ oids.oid_label }}</option>
+					{% endfor %}
+					</optgroup>
 				</select>
 			</div>
 		</div>

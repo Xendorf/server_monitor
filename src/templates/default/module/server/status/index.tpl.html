@@ -7,6 +7,9 @@
 					<h2>{{ server.label }}</h2>
 					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
 					<p>{{ label_last_check }}: {{ server.last_checked_nice }}</p>
+                    {% if server.type == 'snmp' %}
+                    <p>{{ label_snmp_info }}: {{ server.snmp_last_value }}</p>
+                    {% endif %}
 				</div>
 			</div>
 			{% endfor %}
@@ -16,6 +19,9 @@
 					<h2>{{ server.label }}</h2>
 					<p>{{ label_last_online }}: {{ server.last_online_nice }}</p>
 					<p>{{ label_rtime }}: {{ server.rtime }}s</p>
+                    {% if server.type == 'snmp' %}
+                    <p>{{ label_snmp_info }}: {{ server.snmp_last_value }}</p>
+                    {% endif %}
 				</div>
 			</div>
 			{% endfor %}
@@ -28,7 +34,11 @@
 				<div class="entity {{ server.class_warning }}" onclick="window.location.href='{{ server.url_view|raw }}'">
 					<h2>{{ server.label }}</h2>
 					<p><i class="icon-white icon-check"></i> {{ server.last_online_nice }}</p>
+                    {% if server.type != 'snmp' %}
 					<p><i class="icon-white icon-share"></i> {{ server.last_checked_nice }}</p>
+                    {% else %}
+                    <p><i class="icon-white icon-random"></i> {{ server.snmp_last_value }}</p>
+                    {% endif %}
 				</div>
 			</div>
 			{% endfor %}
@@ -37,7 +47,11 @@
 				<div class="entity" onclick="window.location.href='{{ server.url_view|raw }}'">
 					<h2>{{ server.label }}</h2>
 					<p><i class="icon-white icon-check"></i> {{ server.last_online_nice }}</p>
+                    {% if server.type != 'snmp' %}
 					<p><i class="icon-white icon-share"></i> {{ server.rtime }}s</p>
+                    {% else %}
+                    <p><i class="icon-white icon-random"></i> {{ server.snmp_last_value }}</p>
+                    {% endif %}
 				</div>
 			</div>
 			{% endfor %}
@@ -54,11 +68,17 @@
 									<div class="table-body">
 										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
 										<div class="table-row"><div class="table-cell-details tight">{{ label_last_check }}: &nbsp;</div><div class="table-cell-details">{{ server.last_checked_nice }}</div></div>
+                                        {% if server.type == 'snmp' %}
+										<div class="table-row"><div class="table-cell-details tight">{{ label_snmp_info }}: &nbsp;</div><div class="table-cell-details">{{ server.snmp_last_value }}</div></div>
+                                        {% endif %}
 									</div>
 								</div>
 							</td>
 							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
 							<td class="{{ server.class_warning }} hidden-phone">{{ label_last_check }}: {{ server.last_checked_nice }}</td>
+                            {% if server.type == 'snmp' %}
+                            <td class="{{ server.class_warning }} hidden-phone">{{ label_snmp_info }}: {{ server.snmp_last_value }}</td>
+                            {% endif %}
 						</tr>
 					{% endfor %}
 					{% for server in servers_online %}
@@ -68,11 +88,17 @@
 									<div class="table-body">
 										<div class="table-row"><div class="table-cell-details tight">{{ label_last_online }}: &nbsp;</div><div class="table-cell-details">{{ server.last_online_nice }}</div></div>
 										<div class="table-row"><div class="table-cell-details tight">{{ label_rtime }}: &nbsp;</div><div class="table-cell-details">{{ server.rtime }}</div></div>
+                                        {% if server.type == 'snmp' %}
+										<div class="table-row"><div class="table-cell-details tight">{{ label_snmp_info }}: &nbsp;</div><div class="table-cell-details">{{ server.snmp_last_value }}</div></div>
+                                        {% endif %}
 									</div>
 								</div>
 							</td>
 							<td class="hidden-phone">{{ label_last_online }}: {{ server.last_online_nice }}</td>
 							<td class="hidden-phone">{{ label_rtime }}: {{ server.rtime }}s</td>
+                            {% if server.type == 'snmp' %}
+                            <td class="hidden-phone">{{ label_snmp_info }}: {{ server.snmp_last_value }}</td>
+                            {% endif %}
 						</tr>
 					{% endfor %}
 				</tbody>

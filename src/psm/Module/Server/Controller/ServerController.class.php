@@ -203,7 +203,17 @@ class ServerController extends AbstractServerController {
 				'edit_email_selected_' . $edit_server['email'] => 'selected="selected"',
 				'edit_sms_selected_' . $edit_server['sms'] => 'selected="selected"',
 				'edit_pushover_selected_' . $edit_server['pushover'] => 'selected="selected"',
+                'edit_snmp_community' => $edit_server['snmp_community'],
+				'default_value_snmp_community' => PSM_SNMP_COMMUNITY,
+                'edit_snmp_version_selected_' . strtolower($edit_server['snmp_version']) => 'selected="selected"',
+                'edit_snmp_oid_selected_' . $edit_server['snmp_oid'] => 'selected="selected"',
 			));
+		}
+
+		$tpl_data['oids_custom'] = $this->db->select(PSM_DB_PREFIX.'snmp_oid', null, array('oid_name', 'oid_label'), '', 'oid_label');
+		foreach ($tpl_data['oids_custom'] as $index => $oids)
+		{
+			$tpl_data['oids_custom'][$index]['edit_selected'] = ($oids['oid_name'] == $edit_server['snmp_oid'] ? 'selected="selected"' : '');
 		}
 
 		$notifications = array('email', 'sms', 'pushover');
@@ -242,6 +252,7 @@ class ServerController extends AbstractServerController {
 			'email' => in_array($_POST['email'], array('yes', 'no')) ? $_POST['email'] : 'no',
 			'sms' => in_array($_POST['sms'], array('yes', 'no')) ? $_POST['sms'] : 'no',
 			'pushover' => in_array($_POST['pushover'], array('yes', 'no')) ? $_POST['pushover'] : 'no',
+			'snmp_oid' => psm_POST('snmp_oid', ''),            
 		);
 		/* make sure websites start with http:// or https:// if port is 443 */
 		if($clean['type'] == 'website' && !preg_match('#^http(s)?://#', $clean['ip'])) {
@@ -295,6 +306,19 @@ class ServerController extends AbstractServerController {
 			// add all new users
 			$this->db->insertMultiple(PSM_DB_PREFIX.'users_servers', $user_idc_save);
 		}
+		
+		// update snmp
+		$clean_snmp = array(
+			'server_id' => $this->server_id,
+            'snmp_community' => trim(strip_tags(psm_POST('snmp_community', ''))),
+			'snmp_version' => in_array($_POST['snmp_version'], array('1', '2c')) ? $_POST['snmp_version'] : '1',            
+		);
+		$chkSnmp = $this->db->selectRow(PSM_DB_PREFIX .'snmp', array('server_id' => $this->server_id), array('snmp_id') );
+		$this->db->save(
+			PSM_DB_PREFIX.'snmp',
+			$clean_snmp,
+			(count($chkSnmp) > 0 ? array('server_id' => $this->server_id) : null)
+		);
 
 		$back_to = isset($_GET['back_to']) ? $_GET['back_to'] : 'index';
 		if($back_to == 'view') {
@@ -395,6 +419,7 @@ class ServerController extends AbstractServerController {
 			'label_website' => psm_get_lang('servers', 'type_website'),
 			'label_service' => psm_get_lang('servers', 'type_service'),
             'label_ping' => psm_get_lang('servers', 'type_ping'),
+            'label_snmp' => psm_get_lang('servers', 'type_snmp'),
 			'label_type' => psm_get_lang('servers', 'type'),
 			'label_pattern' => psm_get_lang('servers', 'pattern'),
 			'label_pattern_description' => psm_get_lang('servers', 'pattern_description'),
@@ -418,6 +443,23 @@ class ServerController extends AbstractServerController {
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+            'label_snmp_title' => psm_get_lang('snmp', 'title'),
+            'label_snmp_community' => psm_get_lang('snmp', 'community'),
+            'label_snmp_community_description' => psm_get_lang('snmp', 'community_description'),
+            'label_snmp_version' => psm_get_lang('snmp', 'version'),
+            'label_snmp_version_description' => psm_get_lang('snmp', 'version_description'),
+            'label_snmp_oid' => psm_get_lang('snmp', 'oid'),
+            'label_snmp_detail_title' => psm_get_lang('snmp', 'detail_title'),
+            'label_snmp_oid_last_value' => psm_get_lang('snmp', 'last_value'),
+            'label_snmp_oid_sysuptime' => psm_get_lang('snmp', 'oid_sysuptime'),
+            'label_snmp_oid_sysdescr' => psm_get_lang('snmp', 'oid_sysdescr'),
+            'label_snmp_oid_sysobjectid' => psm_get_lang('snmp', 'oid_sysobjectid'),
+            'label_snmp_oid_syscontact' => psm_get_lang('snmp', 'oid_syscontact'),
+            'label_snmp_oid_sysname' => psm_get_lang('snmp', 'oid_sysname'),
+            'label_snmp_oid_syslocation' => psm_get_lang('snmp', 'oid_syslocation'),
+            'label_snmp_oid_sysservices' => psm_get_lang('snmp', 'oid_sysservices'),
+            'label_optgroup_oid_standard' => psm_get_lang('snmp', 'title_oid_standard'),
+            'label_optgroup_oid_custom' => psm_get_lang('snmp', 'title_oid_custom'),
 		);
 	}
 

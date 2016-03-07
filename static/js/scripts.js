@@ -46,6 +46,44 @@ $().ready(function() {
 		enableCaseInsensitiveFiltering: true
 	});
 
+	// snmp configuration
+	$('#snmp-config').hide();
+	$('#snmp-config #snmp-form-edit').hide();
+	$('#snmp-config #snmp-form-add').hide();
+	$('.cfg-snmp-edit').click(function(e) {
+		var $id = $(this).data('record-id');
+		
+		$('#snmp-config').show();
+		$('#snmp-config #snmp-form-add').hide();
+		$('#snmp-config #snmp-form-edit').show();
+		$('tr.highlight-fx td').removeClass('highlight');
+		$('tr#cfg-snmp-oid-'+ $id +' td').addClass(('highlight'));
+		$('#oid_id').val($('#oid_id_'+ $id).html()); 
+		$('#oid_name').val($('#oid_name_'+ $id).html()); 
+		$('#oid_label').val($('#oid_label_'+ $id).html()); 
+		$('#oid_string').val($('#oid_string_'+ $id).html()); 
+		$('#oid_conversion').val($('#oid_conversion_'+ $id).html()); 
+		$('#oid_status_up').val($('#oid_status_up_'+ $id).html()); 
+		$('#oid_status_warning').val($('#oid_status_warning_'+ $id).html()); 
+		$('#oid_status_error').val($('#oid_status_error_'+ $id).html()); 
+	});
+
+	$('.cfg-snmp-add-new').click(function(e) {
+		
+		$('#snmp-config').show();
+		$('#snmp-config #snmp-form-edit').hide();
+		$('#snmp-config #snmp-form-add').show();
+		$('tr.highlight-fx td').removeClass('highlight');
+		$('#oid_id').val('0'); 
+		$('#oid_name').val(''); 
+		$('#oid_label').val(''); 
+		$('#oid_string').val(''); 
+		$('#oid_conversion').val(''); 
+		$('#oid_status_up').val(''); 
+		$('#oid_status_warning').val(''); 
+		$('#oid_status_error').val(''); 
+	});
+
 	psm_flash_message();
 	psm_tooltips();
 });

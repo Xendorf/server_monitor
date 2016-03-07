@@ -55,9 +55,11 @@ class StatusController extends AbstractServerController {
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
+            'label_snmp_info' => psm_get_lang('snmp', 'title_small'),
 			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
 			'list_layout_active'	=> ($layout == 1) ? 'active' : '',
 			'small_layout_active'	=> ($layout == 2) ? 'active' : '',
+            'snmp_info' => 'off',
 		);
 		$this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
 
@@ -76,6 +78,16 @@ class StatusController extends AbstractServerController {
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
+
+            $server['snmp_last_value'] = $server['snmp_value_raw'];
+            if ($server['snmp_value_raw'] != $server['snmp_value_convert'])
+            {
+                $server['snmp_last_value'] = $server['snmp_value_convert'];
+                $server['snmp_last_value'] = preg_replace_callback(
+                    '/{{([\S]+)}}/',
+                    function (&$matches) { return psm_get_lang('common', $matches[1] .'_small'); },
+                    $server['snmp_last_value']);
+            }
 
 			if ($server['status'] == "off") {
 				$layout_data['servers_offline'][] = $server;

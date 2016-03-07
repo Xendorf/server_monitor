@@ -4,6 +4,7 @@
       <li class="{{ email_active }}"><a href="#config-email" data-toggle="tab">{{ label_tab_email }}</a></li>
       <li class="{{ sms_active }}"><a href="#config-sms" data-toggle="tab">{{ label_tab_sms }}</a></li>
       <li class="{{ pushover_active }}"><a href="#config-pushover" data-toggle="tab">{{ label_tab_pushover }}</a></li>
+      <li class="{{ snmp_active }}"><a href="#config-snmp" data-toggle="tab">{{ label_tab_snmp }}</a></li>
     </ul>
 	<div class="tab-content well">
 	  <div id="config-general" class="tab-pane {{ general_active }}">
@@ -223,5 +224,94 @@
             </div>
 		</fieldset>
 		</div>
+        <!-- // SNMP TAB // -->
+		<div id="config-snmp" class="tab-pane {{ snmp_active }} hidden-phone">
+			<fieldset>
+				<legend>{{ label_settings_snmp }}</legend>
+				<div class="entity-container">
+<table class="table table-bordered" id="snmp-config">
+	<colgroup>
+		<col class="oce-first" />
+		<col />
+	</colgroup>
+	<thead>
+		<tr class="head">
+			<th colspan="2"><span id="snmp-form-edit">{{ label_edit }}</span><span id="snmp-form-add">{{ label_add_new }}</span>
+				<input type="hidden" name="oid_id" id="oid_id" value="0" />
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="tight tright">{{ label_oid_name }}:</td>
+			<td><input type="text" name="oid_name" id="oid_name" value="" maxlength="255" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_label }}:</td>
+			<td><input type="text" name="oid_label" id="oid_label" value="" maxlength="255" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_string }}:</td>
+			<td><input type="text" name="oid_string" id="oid_string" value="" maxlength="255" data-toggle="tooltip" title="{{ tooltip_oid_string }}" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_conversion }}:</td>
+			<td><input type="text" name="oid_conversion" id="oid_conversion" value="" maxlength="255" data-toggle="tooltip" title="{{ tooltip_oid_conversion }}" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_status_up }}:</td>
+			<td><input type="text" name="oid_status_up" id="oid_status_up" value="" maxlength="255" data-toggle="tooltip" title="{{ tooltip_oid_status_up }}" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_status_warning }}:</td>
+			<td><input type="text" name="oid_status_warning" id="oid_status_warning" value="" maxlength="255" data-toggle="tooltip" title="{{ tooltip_oid_status_warning }}" /></td>
+		</tr>
+		<tr>
+			<td class="tight tright">{{ label_oid_status_error }}:</td>
+			<td><input type="text" name="oid_status_error" id="oid_status_error" value="" maxlength="255" data-toggle="tooltip" title="{{ tooltip_oid_status_error }}" /></td>
+		</tr>
+	</tbody>
+</table>
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th class="hidden-phone">{{ label_oid_id }}</th>
+								<th class="visible-desktop">{{ label_oid_name }}</th>
+								<th class="visible-desktop">{{ label_oid_label }}</th>
+								<th class="visible-desktop"><i class="icon-info-sign"  data-toggle="tooltip" title="{{ tooltip_oid_string }}"></i> {{ label_oid_string }}</th>
+								<th class="hidden-phone"><i class="icon-info-sign"  data-toggle="tooltip" title="{{ tooltip_oid_conversion }}"></i> {{ label_oid_conversion }}</th>
+								<th class="hidden-phone"><i class="icon-info-sign"  data-toggle="tooltip" title="{{ tooltip_oid_status_up }}"></i> {{ label_oid_status_up }}</th>
+								<th class="hidden-phone"><i class="icon-info-sign"  data-toggle="tooltip" title="{{ tooltip_oid_status_warning }}"></i> {{ label_oid_status_warning }}</th>
+								<th class="hidden-phone"><i class="icon-info-sign"  data-toggle="tooltip" title="{{ tooltip_oid_status_error }}"></i> {{ label_oid_status_error }}</th>
+								<th class="hidden-phone"><a class="btn btn-small cfg-snmp-add-new" href="#" title="{{ label_add_new }}" data-record-id="0"><i class="icon-plus"></i></a></th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for oid_list in snmp_oid_list %}
+							<tr id="cfg-snmp-oid-{{ oid_list.oid_id }}" class="highlight-fx">
+								<td class="hidden-phone tight"><div class="table-cell-title" id="oid_id_{{ oid_list.oid_id }}">{{ oid_list.oid_id }}</div></td>
+								<td class="visible-desktop"><div class="table-cell-title" id="oid_name_{{ oid_list.oid_id }}">{{ oid_list.oid_name }}</div></td>
+								<td class="visible-desktop"><div class="table-cell-title" id="oid_label_{{ oid_list.oid_id }}">{{ oid_list.oid_label }}</div></td>
+								<td class="visible-desktop"><div class="table-cell-title" id="oid_string_{{ oid_list.oid_id }}">{{ oid_list.oid_string }}</div></td>
+								<td class="hidden-phone"><div class="table-cell-title" id="oid_conversion_{{ oid_list.oid_id }}">{{ oid_list.oid_conversion }}</div></td>
+								<td class="hidden-phone"><div class="table-cell-title" id="oid_status_up_{{ oid_list.oid_id }}">{{ oid_list.oid_status_up }}</div></td>
+								<td class="hidden-phone"><div class="table-cell-title" id="oid_status_warning_{{ oid_list.oid_id }}">{{ oid_list.oid_status_warning }}</div></td>
+								<td class="hidden-phone"><div class="table-cell-title" id="oid_status_error_{{ oid_list.oid_id }}">{{ oid_list.oid_status_error }}</div></td>
+								<td class="hidden-phone tight">
+									<a class="btn btn-small cfg-snmp-edit" href="#" title="{{ label_edit }}" data-record-id="{{ oid_list.oid_id }}">
+										<i class="icon-pencil"></i>
+									</a>
+									<a class="btn btn-small btn-danger show-modal" href="#" title="{{ label_delete }}">
+										<i class="icon-remove icon-white"></i>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+		</div>
+
 	</div>
 </form>

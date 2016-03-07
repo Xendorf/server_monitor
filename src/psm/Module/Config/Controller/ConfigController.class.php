@@ -137,6 +137,9 @@ class ConfigController extends AbstractController {
 			$modal->setMessage(psm_get_lang('config', 'test_' . $modal_id));
 			$modal->setOKButtonLabel(psm_get_lang('config', 'send'));
 		}
+		
+		// SNMP tab
+		$tpl_data['snmp_oid_list'] = $this->db->select(PSM_DB_PREFIX .'snmp_oid', null, null, '', 'oid_id');
 
 		return $this->twig->render('module/config/config.tpl.html', $tpl_data);
 	}
@@ -285,11 +288,13 @@ class ConfigController extends AbstractController {
 			'label_tab_email' => psm_get_lang('config', 'tab_email'),
 			'label_tab_sms' => psm_get_lang('config', 'tab_sms'),
 			'label_tab_pushover' => psm_get_lang('config', 'tab_pushover'),
+			'label_tab_snmp' => psm_get_lang('config', 'tab_snmp'),
 			'label_settings_email' => psm_get_lang('config', 'settings_email'),
 			'label_settings_sms' => psm_get_lang('config', 'settings_sms'),
 			'label_settings_pushover' => psm_get_lang('config', 'settings_pushover'),
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
+			'label_settings_snmp' => psm_get_lang('config', 'settings_snmp'),
 			'label_general' => psm_get_lang('config', 'general'),
 			'label_language' => psm_get_lang('config', 'language'),
 			'label_show_update' => psm_get_lang('config', 'show_update'),
@@ -344,6 +349,24 @@ class ConfigController extends AbstractController {
 			'label_log_retention_period' => psm_get_lang('config', 'log_retention_period'),
 			'label_log_retention_period_description' => psm_get_lang('config', 'log_retention_period_description'),
 			'label_log_retention_days' => psm_get_lang('config', 'log_retention_days'),
+			/* SNMP Label */
+			'label_action' => psm_get_lang('system', 'action'),
+			'label_edit' => psm_get_lang('system', 'edit'),
+			'label_delete' => psm_get_lang('system', 'delete'),
+			'label_add_new' => psm_get_lang('system', 'add_new'),
+			'label_oid_id' => psm_get_lang('config', 'oid_id'),
+			'label_oid_name' => psm_get_lang('config', 'oid_name'),
+			'label_oid_label' => psm_get_lang('config', 'oid_label'),
+			'label_oid_string' => psm_get_lang('config', 'oid_string'),
+			'label_oid_conversion' => psm_get_lang('config', 'oid_conversion'),
+			'label_oid_status_up' => psm_get_lang('config', 'oid_status_up'),
+			'label_oid_status_warning' => psm_get_lang('config', 'oid_status_warning'),
+			'label_oid_status_error' => psm_get_lang('config', 'oid_status_error'),
+			'tooltip_oid_string' => psm_get_lang('config', 'oid_string_tooltip'),
+			'tooltip_oid_conversion' => psm_get_lang('config', 'oid_conversion_tooltip'),
+			'tooltip_oid_status_up' => psm_get_lang('config', 'oid_status_up_tooltip'),
+			'tooltip_oid_status_warning' => psm_get_lang('config', 'oid_status_warning_tooltip'),
+			'tooltip_oid_status_error' => psm_get_lang('config', 'oid_status_error_tooltip'),
 		);
 	}
 }

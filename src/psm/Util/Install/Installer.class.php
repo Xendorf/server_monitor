@@ -213,7 +213,7 @@ class Installer {
 						  `ip` varchar(100) NOT NULL,
 						  `port` int(5) unsigned NOT NULL,
 						  `label` varchar(255) NOT NULL,
-						  `type` enum('service','website','ping') NOT NULL default 'service',
+						  `type` enum('service','website','ping','snmp') NOT NULL default 'service',
 						  `pattern` varchar(255) NOT NULL,
 						  `status` enum('on','off') NOT NULL default 'on',
 						  `error` varchar(255) NULL,
@@ -227,6 +227,9 @@ class Installer {
                           `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
                           `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
                           `timeout` smallint(1) unsigned NULL DEFAULT NULL,
+                          `snmp_oid` varchar(255) DEFAULT NULL,
+                          `snmp_value_raw` varchar(255) DEFAULT NULL,
+                          `snmp_value_convert` varchar(255) DEFAULT NULL,
 						  PRIMARY KEY  (`server_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 			PSM_DB_PREFIX . 'servers_uptime' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "servers_uptime` (
@@ -249,6 +252,24 @@ class Installer {
 						  `checks_failed` int(11) unsigned NOT NULL,
 						  PRIMARY KEY (`servers_history_id`),
 						  UNIQUE KEY `server_id_date` (`server_id`,`date`)
+						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'psm_snmp' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "psm_snmp` (
+                          `snmp_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                          `server_id` int(11) unsigned NOT NULL DEFAULT '0',
+                          `snmp_community` varchar(255) CHARACTER SET utf8 NOT NULL,
+                          `snmp_version` enum('1','2C') NOT NULL DEFAULT '2C',
+                          PRIMARY KEY (`snmp_id`)
+						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
+			PSM_DB_PREFIX . 'psm_snmp_oid' => "CREATE TABLE IF NOT EXISTS `" . PSM_DB_PREFIX . "psm_snmp_oid` (
+                          `oid_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                          `oid_name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_label` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_string` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_conversion` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_status_up` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_status_warning` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          `oid_status_error` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+                          PRIMARY KEY (`oid_id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;",
 		);
 
