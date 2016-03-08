@@ -77,15 +77,14 @@ class ServerController extends AbstractServerController {
 				psm_get_lang('system', 'add_new'),
 				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 				'plus icon-white', 'success'
+    		$sidebar->addButton(
+    			'update',
+    			psm_get_lang('menu', 'server_update'),
+    			psm_build_url(array('mod' => 'server_update')),
+    			'refresh'
+    		);
 			);
 		}
-
-		$sidebar->addButton(
-			'update',
-			psm_get_lang('menu', 'server_update'),
-			psm_build_url(array('mod' => 'server_update')),
-			'refresh'
-		);
 
 		$icons = array(
 			'email' => 'icon-envelope',

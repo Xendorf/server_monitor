@@ -1,9 +1,11 @@
 <div class="tabbable">
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#log_status_content" data-toggle="tab">{{ label_status }}</a></li>
-		<li><a href="#log_email_content" data-toggle="tab">{{ label_email }}</a></li>
+		{% if user_level == 'admin' %}
+        <li><a href="#log_email_content" data-toggle="tab">{{ label_email }}</a></li>
 		<li><a href="#log_sms_content" data-toggle="tab">{{ label_sms }}</a></li>
 		<li><a href="#log_pushover_content" data-toggle="tab">{{ label_pushover }}</a></li>
+        {% endif %}
 	</ul>
 	<div class="tab-content well">
 		{% for tab in tabs %}

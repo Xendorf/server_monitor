@@ -44,6 +44,8 @@ class LogController extends AbstractServerController {
 	 */
 	protected function executeIndex() {
 		$this->twig->addGlobal('subtitle', psm_get_lang('menu', 'server_log'));
+        $user_level = $this->user->getUserLevel();
+        $user_level = ($user_level == PSM_USER_ADMIN ? 'admin' : ($user_level == PSM_USER_USER ? 'user' : 'anonimous'));
 		$tpl_data = array(
 			'label_status' => psm_get_lang('log', 'status'),
 			'label_email' => psm_get_lang('log', 'email'),
@@ -57,7 +59,9 @@ class LogController extends AbstractServerController {
 			'label_users' => ucfirst(psm_get_lang('menu', 'user')),
 			'label_no_logs' => psm_get_lang('log', 'no_logs'),
 			'tabs' => array(),
+            'user_level' => $user_level,
 		);
+
 		$log_types = array('status', 'email', 'sms', 'pushover');
 
 		// get users

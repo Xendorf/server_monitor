@@ -267,7 +267,7 @@ abstract class AbstractController implements ControllerInterface {
 				$items = array('server_status', 'server', 'server_log', 'user', 'config', 'server_update');
 				break;
 			case PSM_USER_USER:
-				$items = array('server_status', 'server', 'server_log', 'server_update');
+				$items = array('server_status', 'server', 'server_log');
 				break;
 			default:
 				$items = array();
