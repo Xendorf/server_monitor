@@ -302,7 +302,16 @@ function psm_curl_get($href, $header = false, $body = true, $timeout = null, $ad
  * @param string $time
  * @return string
  */
-function psm_timespan($time) {
+function psm_timespan($time, $rtime=false) {
+    
+    if ($rtime)
+    {
+        return number_format($time,
+                             psm_get_lang('locale_float_decimal'), 
+                             psm_get_lang('locale_decimal_sep'), 
+                             psm_get_lang('locale_thousands_sep')) .' '. psm_get_lang('common', ($time > 0 && $time < 2 ? 'second_small' : 'seconds_small'));
+    }
+    
 	if(empty($time) || $time == '0000-00-00 00:00:00') {
 		return psm_get_lang('system', 'never');
 	}
