@@ -77,12 +77,12 @@ class ServerController extends AbstractServerController {
 				psm_get_lang('system', 'add_new'),
 				psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 				'plus icon-white', 'success'
+    		);
     		$sidebar->addButton(
     			'update',
     			psm_get_lang('menu', 'server_update'),
     			psm_build_url(array('mod' => 'server_update')),
     			'refresh'
-    		);
 			);
 		}
 
@@ -194,7 +194,7 @@ class ServerController extends AbstractServerController {
 				'edit_value_ip' => $edit_server['ip'],
 				'edit_value_port' => $edit_server['port'],
 				'edit_value_timeout' => $edit_server['timeout'],
-				'default_value_timeout' => PSM_CURL_TIMEOUT,
+				'default_value_timeout' => psm_get_conf('default_timeout', PSM_CURL_TIMEOUT),
 				'edit_value_pattern' => $edit_server['pattern'],
 				'edit_value_warning_threshold' => $edit_server['warning_threshold'],
 				'edit_type_selected_' . $edit_server['type'] => 'selected="selected"',
@@ -208,11 +208,27 @@ class ServerController extends AbstractServerController {
                 'edit_snmp_oid_selected_' . $edit_server['snmp_oid'] => 'selected="selected"',
 			));
 		}
+        else
+        {
+            // set default value
+            $tpl_data['edit_value_port'] = psm_get_conf('default_port', '');
+            $tpl_data['edit_value_warning_threshold'] = psm_get_conf('default_warning_threshold', '1');
+            $tpl_data['edit_value_timeout'] = psm_get_conf('default_timeout', PSM_CURL_TIMEOUT);
+            $tpl_data['default_value_timeout'] = psm_get_conf('default_timeout', PSM_CURL_TIMEOUT);
+            $tpl_data['edit_type_selected_'. psm_get_conf('default_type', 'service')] = 'selected="selected"';
+            $tpl_data['edit_active_selected_'. psm_get_conf('default_active', 'yes')] = 'selected="selected"';
+            $tpl_data['edit_email_selected_'. psm_get_conf('default_email', 'yes')] = 'selected="selected"';
+            $tpl_data['edit_sms_selected_'. psm_get_conf('default_sms', 'yes')] = 'selected="selected"';
+            $tpl_data['edit_pushover_selected_'. psm_get_conf('default_pushover', 'yes')] = 'selected="selected"';
+            $tpl_data['edit_snmp_community'] = psm_get_conf('default_snmp_community', 'public');
+            $tpl_data['edit_snmp_version_selected_'. psm_get_conf('default_snmp_version', '2c')] = 'selected="selected"';
+            $tpl_data['edit_snmp_oid_selected_'. psm_get_conf('default_snmp_oid', 'sysDescr')] = 'selected="selected"';
+        }
 
 		$tpl_data['oids_custom'] = $this->db->select(PSM_DB_PREFIX.'snmp_oid', null, array('oid_name', 'oid_label'), '', 'oid_label');
 		foreach ($tpl_data['oids_custom'] as $index => $oids)
 		{
-			$tpl_data['oids_custom'][$index]['edit_selected'] = ($oids['oid_name'] == $edit_server['snmp_oid'] ? 'selected="selected"' : '');
+			$tpl_data['oids_custom'][$index]['edit_selected'] = ($oids['oid_name'] == (empty($edit_server['snmp_oid']) ? '0' : $edit_server['snmp_oid']) ? 'selected="selected"' : '');
 		}
 
 		$notifications = array('email', 'sms', 'pushover');
@@ -442,6 +458,7 @@ class ServerController extends AbstractServerController {
 			'label_yes' => psm_get_lang('system', 'yes'),
 			'label_no' => psm_get_lang('system', 'no'),
 			'label_add_new' => psm_get_lang('system', 'add_new'),
+            'label_seconds' => psm_get_lang('common', 'seconds_small'),
             'label_snmp_title' => psm_get_lang('snmp', 'title'),
             'label_snmp_community' => psm_get_lang('snmp', 'community'),
             'label_snmp_community_description' => psm_get_lang('snmp', 'community_description'),

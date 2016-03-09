@@ -158,7 +158,18 @@ class Installer {
 					('show_update', '1'),
 					('last_update_check', '0'),
 					('cron_running', '0'),
-					('cron_running_time', '0');";
+					('cron_running_time', '0'),
+                    ('default_warning_threshold','1'),
+                    ('default_timeout','10'),
+                    ('default_type','service'),
+                    ('default_active','yes'),
+                    ('default_email','yes'),
+                    ('default_sms','yes'),
+                    ('default_pushover','yes'),
+                    ('default_port','80'),
+                    ('default_snmp_community','public'),
+                    ('default_snmp_version','2c'),
+                    ('default_snmp_oid','sysDescr');";
 		$this->execSQL($queries);
 	}
 

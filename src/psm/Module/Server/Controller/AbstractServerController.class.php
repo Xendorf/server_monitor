@@ -148,7 +148,7 @@ abstract class AbstractServerController extends AbstractController {
         
 		$server['error'] = htmlentities($server['error']);
 		$server['type'] = psm_get_lang('servers', 'type_' . $server['type']);
-		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : PSM_CURL_TIMEOUT;
+		$server['timeout'] = ($server['timeout'] > 0) ? $server['timeout'] : psm_get_conf('default_timeout', PSM_CURL_TIMEOUT);
 
 		$url_actions = array('delete', 'edit', 'view');
 		foreach($url_actions as $action) {

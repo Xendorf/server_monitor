@@ -281,6 +281,7 @@ $sm_lang = array(
 		'oid_status_up_tooltip' => 'Valore o espressione regolare da utilizzare per identificare lo stato di Attivo',
 		'oid_status_warning_tooltip' => 'Valore o espressione regolare da utilizzare per identificare lo stato di Attenzione',
 		'oid_status_error_tooltip' => 'Valore o espressione regolare da utilizzare per identificare lo stato di Errore',
+        'settings_default' => 'Impostazioni valori predefiniti',
 	),
 	// for newlines in the email messages use <br/>
 	'notifications' => array(

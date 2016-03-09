@@ -63,6 +63,109 @@
                 <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
             </div>
 		  </fieldset>
+          <!-- // Default value settings - START // -->
+		  <fieldset>
+            <legend>{{ label_settings_default }}</legend>
+            <div class="control-group">
+                <label class="control-label" for="default_type">{{ label_default_type }} {{ default_type }}</label>
+                <div class="controls">
+				<select id="type" name="default_type">
+					<option value="service" {% if default_type == 'service' %}selected="selected"{% endif %}>{{ label_service }}</option>
+					<option value="website" {% if default_type == 'website' %}selected="selected"{% endif %}>{{ label_website }}</option>
+					<option value="ping" {% if default_type == 'ping' %}selected="selected"{% endif %}>{{ label_ping }}</option>
+					<option value="snmp" {% if default_type == 'snmp' %}selected="selected"{% endif %}>{{ label_snmp }}</option>
+				 </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="default_port">{{ label_default_port }}</label>
+                <div class="controls">
+					<input type="text" class="input-mini" id="default_port" name="default_port" value="{{ default_port }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="default_warning_threshold">{{ label_default_warning_threshold }}</label>
+                <div class="controls">
+					<input type="text" class="input-mini" id="default_warning_threshold" name="default_warning_threshold" value="{{ default_warning_threshold }}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="default_timeout">{{ label_default_timeout }}</label>
+                <div class="controls">
+					<input type="text" class="input-mini" id="default_timeout" name="default_timeout" value="{{ default_timeout }}" /> {{ label_seconds }}
+                </div>
+            </div>
+		<div class="control-group">
+			<label class="control-label" for="default_active">{{ label_default_active }}</label>
+			<div class="controls">
+				<select id="default_active" name="default_active">
+					<option value="yes" {% if default_active == 'yes' %}selected="selected"{% endif %}>{{ label_yes }}</option>
+					<option value="no" {% if default_active == 'no' %}selected="selected"{% endif %}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="default_email">{{ label_default_email }}</label>
+			<div class="controls">
+				<select id="default_email" name="default_email">
+					<option value="yes" {% if default_email == 'yes' %}selected="selected"{% endif %}>{{ label_yes }}</option>
+					<option value="no" {% if default_email == 'no' %}selected="selected"{% endif %}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="default_sms">{{ label_default_sms }}</label>
+			<div class="controls">
+				<select id="default_sms" name="default_sms">
+					<option value="yes" {% if default_sms == 'yes' %}selected="selected"{% endif %}>{{ label_yes }}</option>
+					<option value="no" {% if default_sms == 'no' %}selected="selected"{% endif %}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="default_pushover">{{ label_default_pushover }}</label>
+			<div class="controls">
+				<select id="default_pushover" name="default_pushover">
+					<option value="yes" {% if default_pushover == 'yes' %}selected="selected"{% endif %}>{{ label_yes }}</option>
+					<option value="no" {% if default_pushover == 'no' %}selected="selected"{% endif %}>{{ label_no }}</option>
+				</select>
+			</div>
+		</div>
+        <legend>{{ label_settings_default_snmp }}</legend>
+		<div class="control-group">
+			<label class="control-label" for="default_snmp_community">{{ label_snmp_community }}</label>
+			<div class="controls">
+				<input type="text" id="default_snmp_community" name="default_snmp_community" value="{{ default_snmp_community }}" maxlength="250" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="default_snmp_version">{{ label_snmp_version }}</label>
+			<div class="controls">
+				<select id="default_snmp_version" name="default_snmp_version" class="input-mini">
+					<option value="1" {% if default_snmp_version == '1' %}selected="selected"{% endif %}>1</option>
+					<option value="2c" {% if default_snmp_version == '2c' %}selected="selected"{% endif %}>2c</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="default_snmp_oid">{{ label_snmp_oid }}</label>
+			<div class="controls">
+				<select id="default_snmp_oid" name="default_snmp_oid">
+					<option value="sysDescr" {% if default_snmp_oid == 'sysDescr' %}selected="selected"{% endif %}>{{ label_snmp_oid_sysdescr }}</option>
+					<option value="sysObjectID" {% if default_snmp_oid == 'sysObjectID' %}selected="selected"{% endif %}>{{ label_snmp_oid_sysobjectid }}</option>
+					<option value="sysUpTime" {% if default_snmp_oid == 'sysUpTime' %}selected="selected"{% endif %}>{{ label_snmp_oid_sysuptime }}</option>
+					<option value="sysContact" {% if default_snmp_oid == 'sysContact' %}selected="selected"{% endif %}>{{ label_snmp_oid_syscontact }}</option>
+					<option value="sysName" {% if default_snmp_oid == 'sysName' %}selected="selected"{% endif %}>{{ label_snmp_oid_sysname }}</option>
+					<option value="sysLocation" {% if default_snmp_oid == 'sysLocation' %}selected="selected"{% endif %}>{{ label_snmp_oid_syslocation }}</option>
+					<option value="sysServices" {% if default_snmp_oid == 'sysServices' %}selected="selected"{% endif %}>{{ label_snmp_oid_sysservices }}</option>
+				</select>
+			</div>
+		</div>
+          <!-- // Default value settings - END // -->
+            <div class="form-actions">
+                <button class="btn btn-success" type="submit" name="general_submit">{{ label_save }}</button>
+            </div>
+		  </fieldset>
 	  </div>
 	  <div id="config-email" class="tab-pane {{ email_active }}">
 		<fieldset>

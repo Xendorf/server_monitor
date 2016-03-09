@@ -116,6 +116,24 @@ class ConfigController extends AbstractController {
 		$tpl_data['email_smtp_security_selected_' . $smtp_sec] = 'selected="selected"';
 		$tpl_data['auto_refresh_servers'] = (isset($config['auto_refresh_servers'])) ? $config['auto_refresh_servers'] : '0';
 		$tpl_data['log_retention_period'] = (isset($config['log_retention_period'])) ? $config['log_retention_period'] : '365';
+        /* default value for server settings */
+        $arrDefault = array(
+            'default_warning_threshold' => '1',
+            'default_timeout'           => '10',
+            'default_type'              => 'service',
+            'default_active'            => 'yes',
+            'default_email'             => 'yes',
+            'default_sms'               => 'yes',
+            'default_pushover'          => 'yes',
+            'default_port'              => '0',
+            'default_snmp_community'    => 'public',
+            'default_snmp_version'      => '2c',
+            'default_snmp_oid'          => 'sysDescr',
+            );
+        foreach ($arrDefault as $default_field => $default_value )
+        {
+            $tpl_data[$default_field] = (isset($config[$default_field]) ? $config[$default_field] : $default_value);
+        }
 
 		foreach($this->checkboxes as $input_key) {
 			$tpl_data[$input_key . '_checked'] =
@@ -161,7 +179,18 @@ class ConfigController extends AbstractController {
 					: '',
 				'auto_refresh_servers' => intval(psm_POST('auto_refresh_servers', 0)),
 				'log_retention_period' => intval(psm_POST('log_retention_period', 365)),
-			);
+                'default_warning_threshold' => intval(psm_POST('default_warning_threshold', 1)),
+                'default_timeout'           => intval(psm_POST('default_timeout', 10)),
+                'default_type'              => psm_POST('default_type', 'service'),
+                'default_active'            => psm_POST('default_active', 'yes'),
+                'default_email'             => psm_POST('default_email', 'yes'),
+                'default_sms'               => psm_POST('default_sms', 'yes'),
+                'default_pushover'          => psm_POST('default_pushover', 'yes'),
+                'default_port'              => intval(psm_POST('default_port', 0)),
+                'default_snmp_community'    => psm_POST('default_snmp_community', 'public'),
+                'default_snmp_version'      => psm_POST('default_snmp_version', '2c'),
+                'default_snmp_oid'          => psm_POST('default_snmp_oid', 'sysDescr'),
+ 			);
 			foreach($this->checkboxes as $input_key) {
 				$clean[$input_key] = (isset($_POST[$input_key])) ? '1': '0';
 			}
@@ -295,6 +324,8 @@ class ConfigController extends AbstractController {
 			'label_settings_notification' => psm_get_lang('config', 'settings_notification'),
 			'label_settings_log' => psm_get_lang('config', 'settings_log'),
 			'label_settings_snmp' => psm_get_lang('config', 'settings_snmp'),
+			'label_settings_default' => psm_get_lang('config', 'settings_default'),
+			'label_settings_default_snmp' => psm_get_lang('config', 'settings_snmp'),
 			'label_general' => psm_get_lang('config', 'general'),
 			'label_language' => psm_get_lang('config', 'language'),
 			'label_show_update' => psm_get_lang('config', 'show_update'),
@@ -367,6 +398,32 @@ class ConfigController extends AbstractController {
 			'tooltip_oid_status_up' => psm_get_lang('config', 'oid_status_up_tooltip'),
 			'tooltip_oid_status_warning' => psm_get_lang('config', 'oid_status_warning_tooltip'),
 			'tooltip_oid_status_error' => psm_get_lang('config', 'oid_status_error_tooltip'),
+            /* Default value label */
+            'label_default_warning_threshold' => psm_get_lang('servers', 'warning_threshold'),
+            'label_default_timeout' => psm_get_lang('servers', 'timeout'),
+            'label_default_type' => psm_get_lang('servers', 'type'),
+            'label_default_port' => psm_get_lang('servers', 'port'),
+            'label_default_active' => psm_get_lang('servers', 'monitoring'),
+            'label_default_email' => psm_get_lang('servers', 'send_email'),
+            'label_default_sms' => psm_get_lang('servers', 'send_sms'),
+            'label_default_pushover' => psm_get_lang('servers', 'pushover'),
+            'label_snmp_community' => psm_get_lang('snmp', 'community'),
+            'label_snmp_version' => psm_get_lang('snmp', 'version'),
+            'label_snmp_oid' => psm_get_lang('snmp', 'oid'),
+            'label_seconds' => psm_get_lang('common', 'seconds_small'),
+			'label_website' => psm_get_lang('servers', 'type_website'),
+			'label_service' => psm_get_lang('servers', 'type_service'),
+            'label_ping' => psm_get_lang('servers', 'type_ping'),
+            'label_snmp' => psm_get_lang('servers', 'type_snmp'),
+            'label_yes' => psm_get_lang('system', 'yes'),
+            'label_no' => psm_get_lang('system', 'no'),
+            'label_snmp_oid_sysuptime' => psm_get_lang('snmp', 'oid_sysuptime'),
+            'label_snmp_oid_sysdescr' => psm_get_lang('snmp', 'oid_sysdescr'),
+            'label_snmp_oid_sysobjectid' => psm_get_lang('snmp', 'oid_sysobjectid'),
+            'label_snmp_oid_syscontact' => psm_get_lang('snmp', 'oid_syscontact'),
+            'label_snmp_oid_sysname' => psm_get_lang('snmp', 'oid_sysname'),
+            'label_snmp_oid_syslocation' => psm_get_lang('snmp', 'oid_syslocation'),
+            'label_snmp_oid_sysservices' => psm_get_lang('snmp', 'oid_sysservices'),
 		);
 	}
 }
