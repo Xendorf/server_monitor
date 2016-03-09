@@ -417,6 +417,16 @@ class ServerController extends AbstractServerController {
 			psm_build_url(array('mod' => $back_to)),
 			'th-list'
 		);
+        if ($this->server_id > 0 && $this->user->getUserLevel() == PSM_USER_ADMIN)
+        {
+    		$sidebar->addButton(
+    			'update',
+    			psm_get_lang('menu', 'server_update'),
+    			psm_build_url(array('mod' => 'server_update', 'id' => $this->server_id, 'back_to' => 'server')),
+    			'refresh'
+    		);
+        }
+        
 
 		return $this->twig->render('module/server/server/view.tpl.html', $tpl_data);
 	}

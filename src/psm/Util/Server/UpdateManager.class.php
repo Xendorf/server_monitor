@@ -50,6 +50,12 @@ class UpdateManager {
 	 */
 	protected $user;
 
+	/**
+	 * ID Server to update
+	 * @var $serverid
+	 */
+	protected $serverid;
+    
 	function __construct(Database $db) {
 		$this->db = $db;
 	}
@@ -60,6 +66,8 @@ class UpdateManager {
 	public function run() {
 		// check if we need to restrict the servers to a certain user
 		$sql_join = '';
+        $sql_where = '';
+        $sql_order = '';
 
 		if($this->user != null && $this->user->getUserLevel() > PSM_USER_ADMIN) {
 			// restrict by user_id
@@ -68,11 +76,21 @@ class UpdateManager {
 						AND `us`.`server_id`=`s`.`server_id`
 						)";
 		}
+        
+        $sql_where .= ($sql_where != '' ? ' AND ' : ' WHERE ') .'`active`=\'yes\' ';
+        
+        if ($this->serverid > 0 && $this->user->getUserLevel() == PSM_USER_ADMIN)
+        {
+            $sql_where .= ($sql_where != '' ? ' AND ' : ' WHERE ') .'`s`.`server_id` = \''. $this->serverid .'\' ';
+        }
+        
+        $sql_order = 'ORDER BY `s`.`label`';
 
 		$sql = "SELECT `s`.`server_id`,`s`.`ip`,`s`.`port`,`s`.`label`,`s`.`type`,`s`.`pattern`,`s`.`status`,`s`.`active`,`s`.`email`,`s`.`sms`,`s`.`pushover`
 				FROM `".PSM_DB_PREFIX."servers` AS `s`
-				{$sql_join}
-				WHERE `active`='yes' ORDER BY `s`.`label` ";
+				{$sql_join} 
+				{$sql_where} 
+                {$sql_order} ";
 
 		$servers = $this->db->query($sql);
 
@@ -98,5 +116,13 @@ class UpdateManager {
 	 */
 	public function setUser(User $user) {
 		$this->user = $user;
+	}
+
+	/**
+	 * Set a server id to restrict the servers being updated
+	 * @param $serverid
+	 */
+	public function setServerID($serverid) {
+		if ($serverid > 0) $this->serverid = $serverid;
 	}
 }

@@ -79,7 +79,8 @@ class StatusController extends AbstractServerController {
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
 			$server['rtime'] = psm_timespan($server['rtime'], true);
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
-
+            $server['url_refresh_single'] = psm_build_url(array('mod' => 'server_update', 'id' => $server['server_id']), true, false);
+            
             $server['snmp_last_value'] = $server['snmp_value_raw'];
             if ($server['snmp_value_raw'] != $server['snmp_value_convert'])
             {

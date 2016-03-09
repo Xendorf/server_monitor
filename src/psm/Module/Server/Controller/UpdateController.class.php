@@ -41,6 +41,7 @@ class UpdateController extends AbstractController {
 
 	protected function executeIndex() {
 		$autorun = new \psm\Util\Server\UpdateManager($this->db);
+        $autorun->setServerID(psm_GET('id', '0'));
 		$autorun->setUser($this->user);
 		$autorun->run();
 
